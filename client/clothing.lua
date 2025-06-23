@@ -191,12 +191,14 @@ function ToggleClothing(which, extra)
 		for k,v in pairs(Table) do
 			if not Toggle.Remember then
 				if k == Cur.Drawable then
-					PlayToggleEmote(Toggle.Emote, function() SetPedComponentVariation(Ped, Toggle.Drawable, v, Cur.Texture, 0) end) return true
+					local t; if (Cur.Texture + 1) > GetNumberOfPedPropTextureVariations(Ped, Toggle.Drawable, v) then t = 0 else t = Cur.Texture end
+					PlayToggleEmote(Toggle.Emote, function() SetPedComponentVariation(Ped, Toggle.Drawable, v, t, 0) end) return true
 				end
 			else
 				if not LastEquipped[which] then
 					if k == Cur.Drawable then
-						PlayToggleEmote(Toggle.Emote, function() LastEquipped[which] = Cur SetPedComponentVariation(Ped, Toggle.Drawable, v, Cur.Texture, 0) end) return true
+						local t; if (Cur.Texture + 1) > GetNumberOfPedPropTextureVariations(Ped, Toggle.Drawable, v) then t = 0 else t = Cur.Texture end
+						PlayToggleEmote(Toggle.Emote, function() LastEquipped[which] = Cur SetPedComponentVariation(Ped, Toggle.Drawable, v, t, 0) end) return true
 					end
 				else
 					local Last = LastEquipped[which]
@@ -271,7 +273,8 @@ function ToggleProps(which)
 		local Variations = Prop.Variants[Gender]
 		for k,v in pairs(Variations) do
 			if Cur.Prop == k then
-				PlayToggleEmote(Prop.Emote.On, function() SetPedPropIndex(Ped, Prop.Prop, v, Cur.Texture, true) end) return true
+				local t; if (Cur.Texture + 1) > GetNumberOfPedPropTextureVariations(Ped, Prop.Prop, v) then t = 0 else t = Cur.Texture end
+				PlayToggleEmote(Prop.Emote.On, function() SetPedPropIndex(Ped, Prop.Prop, v, t, true) end) return true
 			end
 		end
 		Notify(Lang("NoVariants")) return false
